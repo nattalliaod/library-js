@@ -1,0 +1,27 @@
+#root {
+  display: flex;
+}
+
+.left_box {
+  /* display: flex;
+  flex-direction: column; */
+  width: 40%;
+  background-color: bisque;
+  padding: 10px;
+}
+
+.right_box {
+  /* display: block; */
+  width: 60%;
+  background-color: coral;
+}
+
+.books_item {
+  display: flex;
+  align-items: center;
+}
+
+.delete {
+  margin-left: auto;
+  margin-right: 10px;
+}
