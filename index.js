@@ -108,12 +108,41 @@ const getAttr = carrentElems.getAttribute('id')
 
 }
 function editContent(e) {
+	
 	const carrentBtn = e.target.parentNode
 	const getAttrById = carrentBtn.getAttribute('id')
 	console.log(getAttrById)
 	const findBksById = booksFromLoc.find(findBks => findBks.id === getAttrById)
 	console.log(findBksById);
+	rightDiv.insertAdjacentHTML('beforeend', getMarkupForm(findBksById))
+
+	formFunc(findBksById)
+	
+	const saveBtn = document.querySelector('.save_btn')
+	saveBtn.addEventListener('click', clickSaveBtnInp)
+	function clickSaveBtnInp(e) {
+
+		e.preventDefault()
+		console.log(findBksById);
+
+		if (findBksById.title === "" || findBksById.author === "" ||
+			findBksById.img === "" || findBksById.plot === "") {
+		alert(`заполните пустое поле`)
+		} else {
+			const findBksById = booksFromLoc.find(findBks => findBks.id === getAttrById)
+	console.log(findBksById);
+			const newBokInpEdit = JSON.parse(localStorage.getItem('books')) 
+		console.log(newBokInpEdit);
+			const a = newBokInpEdit.indexOf(findBksById)
+			console.log(newBokInpEdit);
+			console.log(findBksById);
+			console.log(a);
+	    }
+	
 }
+clickSaveBtnInp(e)
+}
+
 function addNewBook() {
 	
 	const newBook = {
@@ -124,11 +153,12 @@ function addNewBook() {
 		plot: '',
 	}
 	rightDiv.innerHTML = ''
-	rightDiv.insertAdjacentHTML('beforeend', getMarkupForm())
+	rightDiv.insertAdjacentHTML('beforeend', getMarkupForm(newBook))
 	formFunc(newBook)
 	
 	const saveBtn = document.querySelector('.save_btn')
 	saveBtn.addEventListener('click', clickSaveBtn)
+	
 	function clickSaveBtn(e) {
         e.preventDefault()
 		console.log(newBook);
@@ -141,16 +171,20 @@ function addNewBook() {
 		
 		renderList()
 		rightDiv.innerHTML = ''
-        rightDiv.insertAdjacentHTML('beforeend', renderPreviewMarkUp(newBook))
+		rightDiv.insertAdjacentHTML('beforeend', renderPreviewMarkUp(newBook))
+		
+		setTimeout(() => {
+			alert(`book successfully added`)
+		}, 300);
 	}
 }
 
-function getMarkupForm(book) {
+function getMarkupForm({title, author, img, plot}) {
 	return `<form action="">
-    <label for="">Title<input type="text" name="title" value=""></label>
-    <label for="">Author<input type="text" name="author" value=""></label>
-    <label for="">Img<input type="text" name="img" value=""></label>
-    <label for="">Plot<input type="text" name="plot" value=""></label>
+    <label class = "label-title" for="">Title<input class = "form-input" type="text" name="title" value="${title}"></label>
+    <label class = "label-title" for="">Author<input class = "form-input" type="text" name="author" value="${author}"></label>
+    <label class = "label-title" for="">Img<input class = "form-input" type="text" name="img" value="${img}"></label>
+    <label class = "label-title" for="">Plot<input class = "form-input" type="text" name="plot" value="${plot}"></label>
     <button class="save_btn" type="submit"> Save</button>
 </form>`
 	
@@ -162,7 +196,7 @@ function formFunc(book) {
 	function upDateValue(e) {
 		console.log(e.target.name);
 	    book[e.target.name] = e.target.value;
-
+		// console.log(book[e.target.name] = e.target.value);
 	}
 	console.log(book);
 }
@@ -171,7 +205,7 @@ function renderPreviewMarkUp({title, author, img, plot}) {
 	return `
 	<div>
         <h2>${title}</h2>
-        <p>${author}</p>
+        <p">${author}</p>
         <img src=${img} alt=${title}>
 		<p>${plot}</p>
     </div>
