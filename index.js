@@ -107,40 +107,72 @@ const getAttr = carrentElems.getAttribute('id')
 	renderList()
 
 }
+// function editContent(e) {
+// 	const carrentBtn = e.target.parentNode
+// 	const getAttrById = carrentBtn.getAttribute('id')
+// 	console.log(getAttrById)
+// 	const findBksById = booksFromLoc.find(findBks => findBks.id === getAttrById)
+// 	console.log(findBksById);
+// 	rightDiv.insertAdjacentHTML('beforeend', getMarkupForm(findBksById))
+
+// 	formFunc(findBksById)
+	
+// 	const saveBtn = document.querySelector('.save_btn')
+// 	saveBtn.addEventListener('click', clickSaveBtnInp)
+	
+// 	function clickSaveBtnInp(e) {
+//     e.preventDefault()
+	
+//     if (findBksById.title === "" || findBksById.author === "" ||
+// 			findBksById.img === "" || findBksById.plot === "") {
+// 		alert(`заполните пустое поле`)
+// 		} else {
+// 			const findBksById = booksFromLoc.find(findBks => findBks.id === getAttrById)
+// 	        console.log(findBksById);
+// 			const newBokInpEdit = JSON.parse(localStorage.getItem('books')) 
+// 		console.log(newBokInpEdit);
+// 			localStorage.setItem('books', JSON.stringify(newBokInpEdit))
+// 			const a = newBokInpEdit
+// 			console.log(newBokInpEdit);
+// 			console.log(findBksById);
+// 			console.log(a);
+// 	    }
+	
+// }
+// clickSaveBtnInp(e)
+// }
+
 function editContent(e) {
-	
-	const carrentBtn = e.target.parentNode
-	const getAttrById = carrentBtn.getAttribute('id')
-	console.log(getAttrById)
-	const findBksById = booksFromLoc.find(findBks => findBks.id === getAttrById)
-	console.log(findBksById);
-	rightDiv.insertAdjacentHTML('beforeend', getMarkupForm(findBksById))
+  const newBokInpEdit = JSON.parse(localStorage.getItem('books'));
+  const carrentBtn = e.target.parentNode;
+  const getAttrById = carrentBtn.getAttribute('id');
+  console.log(getAttrById);
+  const findBksById = newBokInpEdit.find(findBks => findBks.id === getAttrById);
+  console.log(findBksById);
+  rightDiv.insertAdjacentHTML('beforeend', getMarkupForm(findBksById));
 
-	formFunc(findBksById)
-	
-	const saveBtn = document.querySelector('.save_btn')
-	saveBtn.addEventListener('click', clickSaveBtnInp)
-	function clickSaveBtnInp(e) {
+  formFunc(findBksById);
 
-		e.preventDefault()
-		console.log(findBksById);
+  const saveBtn = document.querySelector('.save_btn');
+  saveBtn.addEventListener('click', clickSaveBtnInp);
+  function clickSaveBtnInp(e) {
+    e.preventDefault();
+    console.log(findBksById);
 
-		if (findBksById.title === "" || findBksById.author === "" ||
-			findBksById.img === "" || findBksById.plot === "") {
-		alert(`заполните пустое поле`)
-		} else {
-			const findBksById = booksFromLoc.find(findBks => findBks.id === getAttrById)
-	console.log(findBksById);
-			const newBokInpEdit = JSON.parse(localStorage.getItem('books')) 
-		console.log(newBokInpEdit);
-			const a = newBokInpEdit.indexOf(findBksById)
-			console.log(newBokInpEdit);
-			console.log(findBksById);
-			console.log(a);
-	    }
-	
-}
-clickSaveBtnInp(e)
+    if (findBksById.title === '' || findBksById.author === '' || findBksById.img === '' || findBksById.plot === '') {
+      alert(`заполните пустое поле`);
+    } else {
+      const findBksById = newBokInpEdit.find(findBks => findBks.id === getAttrById);
+      console.log(findBksById);
+      //   const newBokInpEdit = JSON.parse(localStorage.getItem('books'));
+      console.log(newBokInpEdit);
+      const a = newBokInpEdit.indexOf(findBksById);
+      console.log(newBokInpEdit);
+      console.log(findBksById);
+      console.log(a);
+    }
+  }
+  clickSaveBtnInp(e);
 }
 
 function addNewBook() {
