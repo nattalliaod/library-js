@@ -38,11 +38,12 @@ const books = [
     какими инструментами ему нужно пользоваться.`,
 	},
 ];
-localStorage.setItem('books', JSON.stringify(books))
+if (!localStorage.getItem('books')) {
+    localStorage.setItem('books', JSON.stringify(books))  
+}
+
 
 const root = document.querySelector('#root')
-console.log(root)
-
 
 
 const left_box = document.createElement('div')
@@ -73,7 +74,7 @@ const booksFromLoc = JSON.parse(localStorage.getItem('books'))
 
 function renderList() {
 	const booksFromLoc = JSON.parse(localStorage.getItem('books'))
-console.log(booksFromLoc);
+     console.log(booksFromLoc);
 
 	const listMarkUp = booksFromLoc.map(({ title, id }) => {
 		return `<li id = ${id} class="books_item">
@@ -84,13 +85,15 @@ console.log(booksFromLoc);
 		</button>
 		</li>`
 	}).join('')
+	
 	listBooks.insertAdjacentHTML('beforeend', listMarkUp)
 	const titleText = document.querySelectorAll('.title_text')
 	titleText.forEach(item => item.addEventListener('click', renderPreview))
 	const deleteButton = document.querySelectorAll('.delete')
 	const editButton = document.querySelectorAll('.edit')
 	deleteButton.forEach(button => button.addEventListener('click',deleteBook))
-	editButton.forEach(button => button.addEventListener('click',editContent))
+	editButton.forEach(button => button.addEventListener('click', editContent))
+	
 }
 renderList()
 
@@ -107,55 +110,25 @@ const getAttr = carrentElems.getAttribute('id')
 	renderList()
 
 }
-// function editContent(e) {
-// 	const carrentBtn = e.target.parentNode
-// 	const getAttrById = carrentBtn.getAttribute('id')
-// 	console.log(getAttrById)
-// 	const findBksById = booksFromLoc.find(findBks => findBks.id === getAttrById)
-// 	console.log(findBksById);
-// 	rightDiv.insertAdjacentHTML('beforeend', getMarkupForm(findBksById))
-
-// 	formFunc(findBksById)
-	
-// 	const saveBtn = document.querySelector('.save_btn')
-// 	saveBtn.addEventListener('click', clickSaveBtnInp)
-	
-// 	function clickSaveBtnInp(e) {
-//     e.preventDefault()
-	
-//     if (findBksById.title === "" || findBksById.author === "" ||
-// 			findBksById.img === "" || findBksById.plot === "") {
-// 		alert(`заполните пустое поле`)
-// 		} else {
-// 			const findBksById = booksFromLoc.find(findBks => findBks.id === getAttrById)
-// 	        console.log(findBksById);
-// 			const newBokInpEdit = JSON.parse(localStorage.getItem('books')) 
-// 		console.log(newBokInpEdit);
-// 			localStorage.setItem('books', JSON.stringify(newBokInpEdit))
-// 			const a = newBokInpEdit
-// 			console.log(newBokInpEdit);
-// 			console.log(findBksById);
-// 			console.log(a);
-// 	    }
-	
-// }
-// clickSaveBtnInp(e)
-// }
 
 function editContent(e) {
-  const newBokInpEdit = JSON.parse(localStorage.getItem('books'));
+	
+	const newBokInpEdit = JSON.parse(localStorage.getItem('books'));
+
   const carrentBtn = e.target.parentNode;
   const getAttrById = carrentBtn.getAttribute('id');
-  console.log(getAttrById);
+ 
   const findBksById = newBokInpEdit.find(findBks => findBks.id === getAttrById);
-  console.log(findBksById);
+
+	rightDiv.innerHTML = '';
   rightDiv.insertAdjacentHTML('beforeend', getMarkupForm(findBksById));
 
   formFunc(findBksById);
 
   const saveBtn = document.querySelector('.save_btn');
   saveBtn.addEventListener('click', clickSaveBtnInp);
-  function clickSaveBtnInp(e) {
+  
+	function clickSaveBtnInp(e) {
     e.preventDefault();
     console.log(findBksById);
 
@@ -164,15 +137,24 @@ function editContent(e) {
     } else {
       const findBksById = newBokInpEdit.find(findBks => findBks.id === getAttrById);
       console.log(findBksById);
-      //   const newBokInpEdit = JSON.parse(localStorage.getItem('books'));
-      console.log(newBokInpEdit);
-      const a = newBokInpEdit.indexOf(findBksById);
-      console.log(newBokInpEdit);
-      console.log(findBksById);
-      console.log(a);
+      const indexBksById = newBokInpEdit.indexOf(findBksById);
+		console.log(indexBksById);
+		newBokInpEdit[indexBksById] = findBksById;
+
+		// const editBook = newBokInpEdit.splice(indexBksById, 1, findBksById)
+		// console.log(editBook);
+		const editBookLocal = localStorage.setItem('books', JSON.stringify(newBokInpEdit));
+		
+        listBooks.innerHTML = ''
+
+		renderList()
+		rightDiv.innerHTML = ''
+		rightDiv.insertAdjacentHTML('beforeend', renderPreviewMarkUp(findBksById))
+
     }
   }
-  clickSaveBtnInp(e);
+	
+
 }
 
 function addNewBook() {
@@ -221,6 +203,7 @@ function getMarkupForm({title, author, img, plot}) {
 </form>`
 	
 }
+
 function formFunc(book) {
 	const inputs = document.querySelectorAll('input')
 	console.log(inputs);
@@ -234,22 +217,22 @@ function formFunc(book) {
 }
 
 function renderPreviewMarkUp({title, author, img, plot}) {
-	return `
-	<div>
+	return `<div>
         <h2>${title}</h2>
         <p">${author}</p>
         <img src=${img} alt=${title}>
 		<p>${plot}</p>
-    </div>
-	`
+    </div>`
 }
 
 function renderPreview(event) {
-	console.log(event.target)
-	const result = books.find(element => element.title === event.target.innerText)
+const booksFromLoc = JSON.parse(localStorage.getItem('books'))
+	const result = booksFromLoc.find(element => element.title === event.target.innerText)
+
+	console.log(result);
 	rightDiv.innerHTML = ''
     rightDiv.insertAdjacentHTML('beforeend', renderPreviewMarkUp(result))
-    console.log(result)
+
 }
 
 
